@@ -1,9 +1,5 @@
 version: "3"
 
-networks:
-  app_network:
-    external: true
-
 services:
   shell:
     container_name: shell
@@ -11,13 +7,28 @@ services:
       context: .
       dockerfile: ./apps/shell/Dockerfile
     restart: always
+    env_file:
+      - ./apps/shell/.env
     ports:
       - 3000:3000
+    networks:
+      - mynetwork
+    extra_hosts:
+      - "host.docker.internal:172.19.0.2"
+
   configs:
     container_name: configs
     build:
       context: .
-      dockerfile: ./apps/configs/Dockerfile
+      dockerfile: ./apps/configs-app/Dockerfile
     restart: always
+    env_file:
+      - ./apps/configs-app/.env
     ports:
       - 3001:3001
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
