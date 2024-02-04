@@ -5,19 +5,19 @@ networks:
     external: true
 
 services:
-  docs:
-    container_name: docs
+  shell:
+    container_name: shell
     build:
       context: .
-      dockerfile: ./apps/docs/Dockerfile
+      dockerfile: ./apps/shell/Dockerfile
     restart: always
     ports:
       - 3000:3000
-  web:
-    container_name: web
+  configs:
+    container_name: configs
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile
+      dockerfile: ./apps/configs/Dockerfile
     restart: always
     ports:
       - 3001:3001
