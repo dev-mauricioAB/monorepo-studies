@@ -1,15 +1,12 @@
-import { Button } from "@repo/ui/button";
-
-import "@repo/ui/styles";
+import Link from "next/link";
 
 export default function Page(): JSX.Element {
   return (
-    <main className="flex p-4">
+    <main className="flex flex-col p-4">
       <h1>Hello CONFIGS</h1>
 
-      <Button appName="docs" className="ml-5">
-        Opa
-      </Button>
+      <Link href="/user-form">Go To User Form</Link>
+      <Link href="/user-form/SLUG">Go To User Form With SLUG</Link>
     </main>
   );
 }

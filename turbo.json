@@ -12,6 +12,9 @@
     "dev": {
       "cache": false,
       "persistent": true
+    },
+    "globalDependencies": {
+      "env": ["NEXT_PUBLIC_CONFIGS_URL"]
     }
   }
 }
