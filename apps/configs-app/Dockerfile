@@ -11,7 +11,7 @@ RUN apk update
 WORKDIR /app
 RUN yarn global add turbo
 COPY . .
-RUN turbo prune configs --docker
+RUN turbo prune configs-app --docker
 
 # Add lockfile and package.json's of isolated subworkspace
 FROM base AS installer
@@ -36,7 +36,7 @@ COPY turbo.json turbo.json
 # ARG TURBO_TOKEN
 # ENV TURBO_TOKEN=$TURBO_TOKEN
 
-RUN yarn turbo build --filter=configs...
+RUN yarn turbo build --filter=configs-app...
 
 FROM base AS runner
 WORKDIR /app
@@ -46,13 +46,13 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
 
-COPY --from=installer /app/apps/configs/next.config.js .
-COPY --from=installer /app/apps/configs/package.json .
+COPY --from=installer /app/apps/configs-app/next.config.js .
+COPY --from=installer /app/apps/configs-app/package.json .
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=installer --chown=nextjs:nodejs /app/apps/configs/.next/standalone ./
-COPY --from=installer --chown=nextjs:nodejs /app/apps/configs/.next/static ./apps/configs/.next/static
-COPY --from=installer --chown=nextjs:nodejs /app/apps/configs/public ./apps/configs/public
+COPY --from=installer --chown=nextjs:nodejs /app/apps/configs-app/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /app/apps/configs-app/.next/static ./apps/configs-app/.next/static
+COPY --from=installer --chown=nextjs:nodejs /app/apps/configs-app/public ./apps/configs-app/public
 
-CMD export PORT=3001 && node apps/configs/server.js
+CMD export PORT=3001 && node apps/configs-app/server.js
